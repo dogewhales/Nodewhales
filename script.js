@@ -18,8 +18,9 @@ function renderGallery(data) {
   });
 }
 
+/* Leaderboard removed */
 function renderLeaderboard(data) {
-  const board = document.getElementById('leaderboard');
+  // leaderboard removed
   const rarityGroups = {};
 
   data.forEach(item => {
@@ -93,6 +94,6 @@ fetch('./rarity.json')
     allData = data;
     renderGallery(allData);
     renderFilters(allData);
-    renderLeaderboard(allData);
+    
     document.getElementById('searchBox').addEventListener('input', handleSearch);
   });
