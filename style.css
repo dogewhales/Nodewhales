@@ -34,3 +34,18 @@ h1 {
   font-size: 0.9em;
   color: #aaa;
 }
+#searchBox {
+  width: 300px;
+  padding: 8px;
+  margin: 10px 0 20px 0;
+  font-size: 16px;
+  border-radius: 6px;
+}
+#filters {
+  margin: 10px 0 30px;
+}
+#filters select {
+  margin: 0 5px;
+  padding: 6px;
+  border-radius: 5px;
+}
