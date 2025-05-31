@@ -12,7 +12,7 @@ function renderGallery(data) {
     div.innerHTML = `
       <img src="${item.imageURI}" alt="${item.name}" />
       <div class="name">${item.name}</div>
-      <div class="rank">Rank: ${item.rank}, Score: ${item.total_rarity_score.toFixed(2)}</div>
+      <div class="rank">Rarity: ${item.rarity_label || 'Unknown'}</div>
     `;
     gallery.appendChild(div);
   });
@@ -20,8 +20,24 @@ function renderGallery(data) {
 
 function renderLeaderboard(data) {
   const board = document.getElementById('leaderboard');
-  const topRanked = [...data].sort((a, b) => a.rank - b.rank).slice(0, 25);
-  board.innerHTML = topRanked.map(x => `<li>${x.name} — Rank ${x.rank}</li>`).join('');
+  const rarityGroups = {};
+
+  data.forEach(item => {
+    const tier = item.rarity_label || 'Unknown';
+    if (!rarityGroups[tier]) rarityGroups[tier] = [];
+    rarityGroups[tier].push(item);
+  });
+
+  board.innerHTML = '';
+
+  Object.entries(rarityGroups).sort().forEach(([tier, items]) => {
+    board.innerHTML += `<h3>${tier} (${items.length})</h3><ul>`;
+    const top = items.sort((a, b) => a.rank - b.rank).slice(0, 10);
+    top.forEach(x => {
+      board.innerHTML += `<li>${x.name} (${x.rarity_label})</li>`;
+    });
+    board.innerHTML += '</ul>';
+  });
 }
 
 function renderFilters(data) {
@@ -66,7 +82,7 @@ function handleSearch(event) {
   const q = event.target.value.toLowerCase().replace('#', '').trim();
   const filtered = allData.filter(item => 
     item.name.toLowerCase().includes(q) ||
-    item.name.replace('Node Doge Whale #', '').includes(q)
+    item.name.replace('N-DWHL #', '').includes(q)
   );
   renderGallery(filtered);
 }
